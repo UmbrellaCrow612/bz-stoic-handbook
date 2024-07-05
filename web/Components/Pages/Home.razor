@@ -1,0 +1,22 @@
+﻿@page "/";
+@inject IJSRuntime Js;
+@rendermode InteractiveServer
+
+<PageTitle>Home</PageTitle>
+
+<button @onclick="Click">
+	click me
+</button>
+
+<div >
+	hello
+</div>
+
+
+@code {
+
+	private async void Click()
+	{
+		await Js.InvokeVoidAsync("eAler");
+	}
+}
