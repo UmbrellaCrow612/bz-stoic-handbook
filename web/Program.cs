@@ -1,4 +1,4 @@
-using web.Components;
+using web;
 
 var builder = WebApplication.CreateBuilder(args);
 
