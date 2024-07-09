@@ -1,4 +1,6 @@
 using api.Data;
+using api.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,7 +25,24 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/documents", async (AppDbContext db) =>
-    await db.Documents.ToListAsync());
+app.MapPost("/register", async (AppDbContext db, [FromBody] UserRegistrationDto userDto) =>
+{
+    if (await db.Users.AnyAsync(u => u.Username == userDto.Username))
+    {
+        return Results.BadRequest("Username already exists");
+    }
+
+    var user = new User
+    {
+        Username = userDto.Username,
+        PasswordHash = userDto.Password,
+        Role = userDto.Role
+    };
+
+    db.Users.Add(user);
+    await db.SaveChangesAsync();
+
+    return Results.Created($"/users/{user.Id}", new { user.Id, user.Username, user.Role });
+});
 
 app.Run();
