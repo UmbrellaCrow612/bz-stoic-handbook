@@ -9,6 +9,10 @@ namespace api.Data
         public DbSet<Folder> Folders { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Admin> Admins { get; set; }
+        public DbSet<Author> Authors { get; set; }
+        public DbSet<Quote> Quotes { get; set; }
+        public DbSet<Book> Books { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -23,6 +27,18 @@ namespace api.Data
                 .HasMany(f => f.Documents)
                 .WithOne(d => d.Folder)
                 .HasForeignKey("FolderId");
+
+            // Configure one-to-many relationship between Author and Book
+            modelBuilder.Entity<Author>()
+                .HasMany(a => a.Books)
+                .WithOne(b => b.Author)
+                .HasForeignKey("AuthorId");
+
+            // Configure one-to-many relationship between Author and Quote
+            modelBuilder.Entity<Author>()
+                .HasMany(a => a.Quotes)
+                .WithOne(q => q.Author)
+                .HasForeignKey("AuthorId");
         }
     }
 }
