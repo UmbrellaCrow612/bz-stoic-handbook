@@ -2,16 +2,12 @@
 {
     public class Book
     {
-        public required string Id { get; set; }
-        public required string Title { get; set; }
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public string Title { get; set; } = string.Empty;
         public required Author Author { get; set; }
-        public required string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
         public required int PublicationYear { get; set; }
-        public string? BookUrl { get; set; }
+        public string? BookUrl { get; set; } = string.Empty;
 
-        public Book()
-        {
-            Id = Guid.NewGuid().ToString();
-        }
     }
 }
