@@ -7,8 +7,7 @@ namespace api.Models
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public required string Username { get; set; }
         public required string PasswordHash { get; set; }
-        public  required string Role { get; set; }
-
+        public required UserRole Role { get; set; }
     }
 
     public class UserRegistrationDto
@@ -22,7 +21,12 @@ namespace api.Models
         public required string Password { get; set; }
 
         [Required]
-        [StringLength(20)]
-        public required string Role { get; set; }
+        public required UserRole Role { get; set; }
+    }
+
+    public enum UserRole
+    {
+        Admin,
+        User
     }
 }

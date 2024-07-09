@@ -46,7 +46,7 @@ app.MapPost("/register", async (AppDbContext db, [FromBody] UserRegistrationDto 
     db.Users.Add(user);
     await db.SaveChangesAsync();
 
-    return Results.Created($"/users/{user.Id}", new { user.Username, user.Role });
+    return Results.Created($"/users/{user.Id}", new { user.Id, user.Username, user.Role });
 })
 .WithName("RegisterUser")
 .WithOpenApi();
