@@ -1,5 +1,4 @@
 using api.Data;
-using api.Models;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,12 +25,5 @@ app.UseHttpsRedirection();
 
 app.MapGet("/documents", async (AppDbContext db) =>
     await db.Documents.ToListAsync());
-
-app.MapPost("/documents", async (AppDbContext db, Document document) =>
-{
-    db.Documents.Add(document);
-    await db.SaveChangesAsync();
-    return Results.Created($"/documents/{document.Id}", document);
-});
 
 app.Run();
