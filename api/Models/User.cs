@@ -24,6 +24,13 @@ namespace api.Models
         public required UserRole Role { get; set; }
     }
 
+    public class UserResponseDto
+    {
+        public required string Id { get; set; }
+        public required string Username { get; set; }
+        public UserRole Role { get; set; }
+    }
+
     public enum UserRole
     {
         Admin,
