@@ -31,6 +31,15 @@ namespace api.Models
         public UserRole Role { get; set; }
     }
 
+    public class UserLoginDto
+    {
+        [Required]
+        public required string Username { get; set; }
+
+        [Required]
+        public required string Password { get; set; }
+    }
+
     public enum UserRole
     {
         Admin,

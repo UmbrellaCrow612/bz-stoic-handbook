@@ -89,6 +89,38 @@ app.MapPost("/register", async (AppDbContext db, [FromBody] UserRegistrationDto 
 .WithName("RegisterUser")
 .WithOpenApi();
 
+app.MapPost("/login", async (AppDbContext db, [FromBody] UserLoginDto loginDto, IPasswordHasher<User> passwordHasher, ILogger<Program> logger) =>
+{
+    var user = await db.Users.FirstOrDefaultAsync(u => u.Username == loginDto.Username);
+
+    if (user == null)
+    {
+        logger.LogWarning("Login attempt with non-existent username: {Username}", loginDto.Username);
+        return Results.Unauthorized();
+    }
+
+    var passwordVerificationResult = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, loginDto.Password);
+
+    if (passwordVerificationResult == PasswordVerificationResult.Failed)
+    {
+        logger.LogWarning("Failed login attempt for user: {UserId}", user.Id);
+        return Results.Unauthorized();
+    }
+
+    logger.LogInformation("User logged in successfully: {UserId}", user.Id);
+
+    var responseDto = new UserResponseDto
+    {
+        Id = user.Id,
+        Username = user.Username,
+        Role = user.Role
+    };
+
+    return Results.Ok(responseDto);
+})
+.WithName("LoginUser")
+.WithOpenApi();
+
 app.Run();
 
 // Ensure to flush and close the log at the end of the program
